@@ -39,6 +39,23 @@ const users = [
   }
 ];
 
+
+
+const products = [
+  {
+    name: "Apple",
+    qty: 100
+  },
+  {
+    name: "Samsung",
+    qty: 50
+  },
+  {
+    name: "Xiaomi",
+    qty: 30
+  }
+]
+
 // Read json encoded body data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -48,6 +65,22 @@ app.use(
     credentials: true,
   })
 );
+
+
+app.post("/products-stock", (req, res) => {
+  const { name, qty } = req.body;
+  const p = products.find(x => x.name == name);
+  if (p && p.qty >= qty) {
+    res.json({
+      invalidQty: false
+    })
+  } else {
+    res.json({
+      invalidQty: true
+    })
+  }
+})
+
 
 app.post("/exists", (req, res) => {
   const { username } = req.body;
