@@ -24,6 +24,19 @@ const users = [
     userName: "Admin2",
     password: "Admin2",
   },
+  {
+    firstName: "Sagar",
+    userId: 3,
+    userName: "Sagar",
+    password: "123",
+  },
+  ,
+  {
+    firstName: "Chandan",
+    userId: 4,
+    userName: "Chandan",
+    password: "Chandan",
+  }
 ];
 
 // Read json encoded body data
@@ -35,6 +48,19 @@ app.use(
     credentials: true,
   })
 );
+
+app.post("/exists", (req, res) => {
+  const { username } = req.body;
+  if (users.some(x => x.userName == username)) {
+    res.json({
+      isAlreadyExists: true
+    })
+  } else {
+    res.json({
+      isAlreadyExists: false
+    })
+  }
+})
 
 app.post("/signin", (req, res) => {
   const { UserName, Password } = req.body;
@@ -92,8 +118,8 @@ app.post("/customers", (req, res) => {
       return;
     }
     customers.push({ firstName: firstName, lastName: lastName });
-    res.send({status:"success"});
-    } catch {
+    res.send({ status: "success" });
+  } catch {
     res.status(400).send("Error While adding data.");
   }
 });
